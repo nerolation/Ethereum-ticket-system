@@ -8,10 +8,7 @@
 One of the challenges of today's Ethereum landscape is privacy. <br/>
 Users fund their accounts, get doxxed, set up new accounts, repeat.
 
-Managing numerous addresses is a complex task. Moreover, the temptation to trade one's privacy for additional functionalities/features has become more prevalent. 
-Users love to link their accounts to [ENS](https://ens.domains/) names or own NFTs that they also use as Twitter profile pictures. 
-
-Today, it has become increasingly challenging to uphold the necessary level of privacy required for secure financial transactions.
+Managing numerous addresses is a complex task and it has become increasingly challenging to uphold the necessary level of privacy required for secure financial transactions.
 
 This privacy issue extends to [stealth addresses](https://eips.ethereum.org/EIPS/eip-5564) as well. Stealth addresses can enhance privacy by creating unlinkable transactions, but they come with the challenge that the recipient's account isn't initially funded with ETH. If the sender doesn't attach sufficient ETH to the stealth address transaction, the recipient is unable to utilize it and must first fund the stealth address from another, potentially doxxed, account. Check out [Vitalik's blog post](https://vitalik.ca/general/2023/01/20/stealth.html) for more details on that topic.
 
