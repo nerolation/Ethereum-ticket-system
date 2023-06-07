@@ -8,25 +8,18 @@
 One of the challenges of today's Ethereum landscape is privacy. <br/>
 Users fund their accounts, get doxxed, set up new accounts, repeat.
 
-Already Satoshi [recommended](https://bitcoin.org/bitcoin.pdf) to use new accounts for every single transaction. <br/>
-Vitalik [mentioned](https://vitalik.ca/general/2023/01/20/stealth.html#conclusions) application-specific addresses for privacy reasons as well.
-So what's the problem?
-
-Well, managing numerous addresses is a complex task. Moreover, the temptation to trade one's privacy for additional functionalities/features has become more prevalent. 
+Managing numerous addresses is a complex task. Moreover, the temptation to trade one's privacy for additional functionalities/features has become more prevalent. 
 Users love to link their accounts to [ENS](https://ens.domains/) names or own NFTs that they also use as Twitter profile pictures. 
-This, coupled with major privacy protocols [facing sanctiones](https://home.treasury.gov/news/press-releases/jy0916), has contributed to a steady weakening of on-chain privacy.
 
 Today, it has become increasingly challenging to uphold the necessary level of privacy required for secure financial transactions.
-For example, if it's known that your EOA holds 1 million dollars in ETH, how much do you think would it cost to hire someone to forcibly obtain those funds and still make some nice profits?
 
-This privacy issue extends to [stealth addresses](https://eips.ethereum.org/EIPS/eip-5564) as well. Stealth addresses can enhance privacy by creating unlinkable transactions, but they come with their own set of challenges. One such challenge is that the recipient's account isn't initially funded with ETH. If the sender doesn't attach sufficient ETH to the stealth address transaction, the recipient is unable to utilize it (aside from proving ownership) and must first fund the stealth address from another, potentially doxxed, account. Check out [Vitalik's blog post](https://vitalik.ca/general/2023/01/20/stealth.html) for more details on that topic.
+This privacy issue extends to [stealth addresses](https://eips.ethereum.org/EIPS/eip-5564) as well. Stealth addresses can enhance privacy by creating unlinkable transactions, but they come with the challenge that the recipient's account isn't initially funded with ETH. If the sender doesn't attach sufficient ETH to the stealth address transaction, the recipient is unable to utilize it and must first fund the stealth address from another, potentially doxxed, account. Check out [Vitalik's blog post](https://vitalik.ca/general/2023/01/20/stealth.html) for more details on that topic.
 
 <p align="center">
 <img src="https://github.com/nerolation/Ethereum-ticket-system/assets/51536394/a509950b-d5dd-4093-8995-572e9cb8081e" />
 </p>
 
-
-Some privacy challenges boil down to the fact that accounts (not talking about [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) SM wallets here) need to have a minimum amount of ETH to cover the computational costs they impose on the entire network - the gas costs - before they can do something on Ethereum. The same challenges apply to users that just want to hold their favorite NFTs without being bothered with our magic internet money at all or those that receive a grant in DAI, want to swap it to pay for their rent, but find themselves unable to do so without paying for at least one transaction to a CEX.
+Some privacy challenges boil down to the fact that accounts (not talking about [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) SM wallets here) need to have a minimum amount of ETH to cover the gas costs before they can do something on Ethereum. The same challenges apply to users that just want to hold their favorite NFTs without being bothered with ETH or those that receive a grant in DAI, want to swap it to pay for their rent, but find themselves unable to do so without paying for at least one transaction to a CEX.
 
 Fortunately, with the introduction of [PBS](https://ethresear.ch/t/proposer-block-builder-separation-friendly-fee-market-designs/9725), we can solve this issue by letting (minimally trusted) external parties, searchers and builders, handle this task. PBS split up the roles of block proposing and block building, effectively separating (light-weight) proposers from (heavy-weight) builders and searchers. By opening up a side channel to pay for transaction inclusion of a transaction of one account but paying for that inclusion from another account, we enable unfunded EOAs to participate in the ecosystem.
 
@@ -57,11 +50,11 @@ Option 2 assumes that a CEX can be entirely trusted — both in terms of securit
 
 There remains option 3...
 
-Having established the context, we'll now delve into a Transaction Fee Ticketing system in greater detail. This post is inspired by a [blog post](https://vitalik.ca/general/2023/01/20/stealth.html#stealth-addresses-and-paying-transaction-fees) from Vitalik, which outlines how such a system could function. One of the most attractive features of this ticketing concept is that it allows users to maintain their privacy while using unfunded EOAs.
+Having established the context, we'll now delve into a Transaction Fee Ticketing concept in greater detail. This post is inspired by a [blog post](https://vitalik.ca/general/2023/01/20/stealth.html#stealth-addresses-and-paying-transaction-fees) from Vitalik, which outlines how such a system could function. One of the most attractive features of this ticketing concept is that it allows users to maintain their privacy while using unfunded EOAs.
 
 ## Fee Ticketing
 
-The ticketing solution is based on David Chaum's ["Blind Signatures for Untraceable Payments"](https://link.springer.com/chapter/10.1007/978-1-4757-0602-4_18) concept from 1983, which cleverly enabled untraceable payments on centralized e-cash systems. Since then, the method has been used in various applications that demand privacy, such as digital voting, and, more cryptocurrency-related, [CoinJoin protocols](https://en.bitcoin.it/wiki/CoinJoin), such as [Wasabi Wallet](https://wasabiwallet.io/) on Bitcoin. Blind signatures come with some very cool properties that allow them to be used for builing a gas fee ticketing solution.
+The ticketing solution is based on David Chaum's ["Blind Signatures for Untraceable Payments"](https://link.springer.com/chapter/10.1007/978-1-4757-0602-4_18) concept from 1983, which cleverly enabled untraceable payments on centralized e-cash systems. Since then, the method has been used in various applications that demand privacy, such as digital voting, and, more cryptocurrency-related, [CoinJoin protocols](https://en.bitcoin.it/wiki/CoinJoin), such as [Wasabi Wallet](https://wasabiwallet.io/) on Bitcoin. Blind signatures come with some very cool properties that allow them to be used for building a gas fee ticketing solution.
 
 **It works as follows:**
 * The user buys a "*ticket*" from a searcher/builder (e.g. builder0x69) for 0.0001 ETH using account `A`. To do so, the user sends the ETH along with some blinded data to the builder. This "data" could theoretically be a hashed string saying "*This is my first ticket*". The "*blinding*" is a cryptographic technique to prevent the builder from seeing the provided data in clear text. The blinding requires a randomly generated number, the *blinding factor*, which is used to "*blind*" the data and is kept secret by the user.
@@ -85,7 +78,7 @@ To maintain the readability of this post without overloading it with code, I hav
 
 Thinking more about this concept, one can identify several challenges, some of which might only be implementation details, whereas others a more fundamental in nature.
 
-#### Trust assumptions
+### Trust assumptions
 As stated above, the ticketing requires some trust to be placed on searchers/builders, who could potentially rug-pull you and run away with the tickets (basically ETH) that have not been redeemed yet. While one might argue that it is always better to go with the trustless solution, I'd agree with the [assessment](https://vitalik.ca/general/2023/01/20/stealth.html) of Vitalik, that, even though some trust in searchers is required, the quantity of funds involved is low, thus the advantages outweigh the disadvantages.
 
 Even if users start purchasing tickets from many different builders/searchers, we're still talking about relatively modest amounts of money.
@@ -98,14 +91,14 @@ At this point, some might ask, "*Aren't you just suggesting to legitimize privat
 **It is more of a private POF that can do the job of giving a jump start to unfunded EOS.**<br/>
 Of course, the concept can be expanded from there.
 
-#### Builder vs. Proposer
+### Builder vs. Proposer
 The builder's block is only accepted and appended to the chain if the corresponding proposer selects it. 
 
 The inclusion of zero-gas fee transactions comes with disadvantages for the searcher/builder because it would make their blocks less attractive for validators. The inclusion of zero-gas fee transactions could be disadvantageous for the searcher or builder as it might make their blocks less appealing to validators. For instance, if a block's entire fees are paid through such "side channels", these blocks might never be selected by proposers, assuming the builder doesn't pass on the generated income to the block's coinbase.
 
 However, the flip side of this situation is that builders securing this additional, potentially lucrative, revenue stream would have more resources to subsidize their blocks, thereby creating a reverse effect. Users value their privacy and would be willing to pay more to have a more seamless yet confidential experience. Consequently, builders and searchers participating in the gas fee ticketing process could gain a competitive edge over others who choose not to participate.
 
-#### User - Builder communication
+### User - Builder communication
 Users should have the capability to purchase a ticket from builders by sending them Ethereum (ETH), which shouldn't pose a problem, and supplying them with blinded data. This blinded data is rendered irrelevant for any other user without access to the blinding factor (a random number used for the blinding). As such, this blinded data can be appended to the transaction as calldata without concerns.
 
 On the other hand, the builder must also establish communication with the user to deliver the signed blinded data after confirming the receipt of the ETH, a process that may present certain challenges.
@@ -122,7 +115,7 @@ If the redemption is submitted along with the transaction through a private comm
 
 In general, establishing an appropriate communication channel between users and builders still seems to demand further effort at this stage.
 
-#### Ticket Size and Change
+### Ticket Size and Change
 For privacy reasons, the ticketing service requires having tickets of fixed sizes. 
 
 Broadly speaking, a ticket should carry enough value (in terms of ETH) so that only a few tickets are needed to compensate the builder for successful inclusion. For smaller ticket sizes, a larger number of tickets would need to be redeemed at once. However, this wouldn't pose a significant issue as users can purchase and redeem multiple tickets at the same time.
