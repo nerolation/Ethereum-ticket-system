@@ -19,7 +19,7 @@ This privacy issue extends to [stealth addresses](https://eips.ethereum.org/EIPS
 <img src="https://github.com/nerolation/Ethereum-ticket-system/assets/51536394/a509950b-d5dd-4093-8995-572e9cb8081e" />
 </p>
 
-Some privacy challenges boil down to the fact that accounts (not talking about [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) SM wallets here) need to have a minimum amount of ETH to cover the gas costs before they can do something on Ethereum. The same challenges apply to users that just want to hold their favorite NFTs without being bothered with ETH or those that receive a grant in DAI, want to swap it to pay for their rent, but find themselves unable to do so without paying for at least one transaction to a CEX.
+Some privacy challenges boil down to the fact that accounts (not talking about [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) SM wallets here) need to have a minimum amount of ETH to cover the gas costs before they can do something on Ethereum.
 
 Fortunately, with the introduction of [PBS](https://ethresear.ch/t/proposer-block-builder-separation-friendly-fee-market-designs/9725), we can solve this issue by letting (minimally trusted) external parties, searchers and builders, handle this task. PBS split up the roles of block proposing and block building, effectively separating (light-weight) proposers from (heavy-weight) builders and searchers. By opening up a side channel to pay for transaction inclusion of a transaction of one account but paying for that inclusion from another account, we enable unfunded EOAs to participate in the ecosystem.
 
@@ -114,7 +114,7 @@ Users should have the capability to purchase a ticket from builders by sending t
 On the other hand, the builder must also establish communication with the user to deliver the signed blinded data after confirming the receipt of the ETH, a process that may present certain challenges.
 
 **Off-chain communication** - One solution could be the use of a private communication channel, such as a Telegram bot. Users would register with the builder's bot to receive the signed blinded data via a direct message. The hurdle here is that users need their blinding factor to unblind the received message content from the builder, a process that involves the modular multiplicative inverse. This is not straightforward, in particular not for everyday users.<br/>
-It would probably be more straightforward to have a UI, hosted by the builder, that handles the communication part (users authenticate/login by signing a msg) and does doe math on the user's front end.
+It would probably be more straightforward to have a UI, hosted by the builder, that handles the communication part (users authenticate/login by signing a msg).
 
 **On-chain communication** - Another alternative would be similar to the ticket purchasing process but reversed: the builder could append the data to a self-send transaction (along with other signed blinded data) and have the users parse it and determine which signed blinded data is relevant to them. However, this method presents the same difficulties as the first example. Moreover, it adds additional costs to the process.
 
