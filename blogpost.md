@@ -1,6 +1,6 @@
 # Fee Ticketing - A Backstage Pass to Ethereum Blocks
 
-**TL;DR - Users buy "tickets" from searchers/builders that, when redeemed, pay for inclusion. Such tickets can be used to interact with the chain using EOAs that aren't funded with ETH. This, while maintaining privacy, so that not even the searcher knows who has bought the redeemed ticket.**
+**TL;DR - Users buy "tickets" from searchers/builders that, when redeemed, pay for inclusion. Such tickets can be used to interact with the chain using EOAs that aren't funded with ETH. This, while maintaining privacy, so that not even the builder knows who has bought the redeemed ticket.**
 
 
 ## Today's landscape
@@ -125,7 +125,7 @@ For privacy reasons, the ticketing service requires having tickets of fixed size
 Broadly speaking, a ticket should carry enough value (in terms of ETH) so that only a few tickets are needed to compensate the builder for successful inclusion. For smaller ticket sizes, a larger number of tickets would need to be redeemed at once. However, this wouldn't pose a significant issue as users can purchase and redeem multiple tickets at the same time.
 
 For example, a user could buy 10 tickets by sending 0.001 ETH to the builder, along with 10 pieces of blinded information.
-Dealing with change could be more complex since a link to the buyer can't be established at the time of redemption. Therefore, the change can only be directed to the same recipient specified during the redemption, or it can be collected by the searcher and/or forwarded to the proposer. 
+Dealing with change could be more complex since a link to the buyer can't be established at the time of redemption. Therefore, the change can only be directed to the same recipient specified during the redemption, or it can be collected by the builder and/or forwarded to the proposer. 
 
 Hence, the ticket size should be chosen to be small enough not to generate substantial amounts of change.
 
