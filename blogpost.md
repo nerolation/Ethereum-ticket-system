@@ -91,15 +91,25 @@ At this point, some might ask, "*Aren't you just suggesting to legitimize privat
 **It is more of a private POF that can do the job of giving a jump start to unfunded EOS.**<br/>
 Of course, the concept can be expanded from there.
 
-### Builder vs. Proposer
+### Builder profits
 The builder's block is only accepted and appended to the chain if the corresponding proposer selects it. 
 
 The inclusion of zero-gas fee transactions comes with disadvantages for the searcher/builder because it would make their blocks less attractive for validators. The inclusion of zero-gas fee transactions could be disadvantageous for the searcher or builder as it might make their blocks less appealing to validators. For instance, if a block's entire fees are paid through such "side channels", these blocks might never be selected by proposers, assuming the builder doesn't pass on the generated income to the block's coinbase.
 
-However, the flip side of this situation is that builders securing this additional, potentially lucrative, revenue stream would have more resources to subsidize their blocks, thereby creating a reverse effect. Users value their privacy and would be willing to pay more to have a more seamless yet confidential experience. Consequently, builders and searchers participating in the gas fee ticketing process could gain a competitive edge over others who choose not to participate.
+However, the flip side of this situation is that builders securing this additional, potentially lucrative, revenue stream would have more resources to subsidize their blocks, thereby creating a reverse effect. Users value their privacy and would be willing to pay more to get their transaction included. Consequently, builders and searchers participating in the gas fee ticketing process could gain a competitive edge over others who choose not to participate.
+
+### Ticket Size and Change
+For privacy reasons, the ticketing service requires having tickets of fixed sizes. 
+
+Broadly speaking, a ticket should carry enough value (in terms of ETH) so that only a few tickets are needed to compensate the builder for successful inclusion. For smaller ticket sizes, a larger number of tickets would need to be redeemed at once. However, this wouldn't pose a significant issue as users can purchase and redeem multiple tickets at the same time.
+
+For example, a user could buy 10 tickets by sending 0.001 ETH to the builder, along with 10 pieces of blinded data.
+Dealing with change could be more complex since a link to the buyer can't be established at the time of redemption. Therefore, the change can only be directed to the same recipient specified during the redemption, or it can be collected by the builder and/or forwarded to the proposer. 
+
+Hence, the ticket size should be chosen to be small enough not to generate substantial amounts of change.
 
 ### User - Builder communication
-Users should have the capability to purchase a ticket from builders by sending them Ethereum (ETH), which shouldn't pose a problem, and supplying them with blinded data. This blinded data is rendered irrelevant for any other user without access to the blinding factor (a random number used for the blinding). As such, this blinded data can be appended to the transaction as calldata without concerns.
+Users should have the capability to purchase a ticket from builders by sending them ETH, which shouldn't pose a problem, and supplying them with blinded data. This blinded data is rendered irrelevant for any other user without access to the blinding factor (a random number used for the blinding). As such, this blinded data can be appended to the transaction as calldata without concerns.
 
 On the other hand, the builder must also establish communication with the user to deliver the signed blinded data after confirming the receipt of the ETH, a process that may present certain challenges.
 
@@ -114,16 +124,6 @@ A third point where communication is necessary occurs when the user wishes to re
 If the redemption is submitted along with the transaction through a private communication channel, additional encryption may not be necessary.
 
 In general, establishing an appropriate communication channel between users and builders still seems to demand further effort at this stage.
-
-### Ticket Size and Change
-For privacy reasons, the ticketing service requires having tickets of fixed sizes. 
-
-Broadly speaking, a ticket should carry enough value (in terms of ETH) so that only a few tickets are needed to compensate the builder for successful inclusion. For smaller ticket sizes, a larger number of tickets would need to be redeemed at once. However, this wouldn't pose a significant issue as users can purchase and redeem multiple tickets at the same time.
-
-For example, a user could buy 10 tickets by sending 0.001 ETH to the builder, along with 10 pieces of blinded data.
-Dealing with change could be more complex since a link to the buyer can't be established at the time of redemption. Therefore, the change can only be directed to the same recipient specified during the redemption, or it can be collected by the builder and/or forwarded to the proposer. 
-
-Hence, the ticket size should be chosen to be small enough not to generate substantial amounts of change.
 
 <p align="center">
 <img src="https://github.com/nerolation/Ethereum-ticket-system/assets/51536394/cc2bd9fc-07be-4ede-8bc0-d3371f5c7744" />
