@@ -90,7 +90,10 @@ As stated above, the ticketing requires some trust to be placed on searchers/bui
 Even if users start purchasing tickets from many different builders/searchers, we're still talking about relatively modest amounts of money.
 In fact, having tickets redeemable at the 4 largest builders (as of June '23: beaver, 0x69, flashbots and rsync) would give a probability of being included in the next block of >70%.
 
-At this point, some might ask, "*Aren't you just suggesting to legitimize private order flows?*", and the answer is "*Yes, but with some some caveats*". It's not the same as the typical private order flows (POF) known in the MEV context that are private deals between users (wallet apps) and searchers to maximize profits thorugh exclusive access to MEV. It is more of a private POF that can do the job of giving a jump start to unfunded EOS. Of course, the concept can be expanded from there.
+At this point, some might ask, "*Aren't you just suggesting to legitimize private order flows?*", and the answer is "*Yes, but with some some caveats*". It's important to note that this is not equivalent to the typical private order flows (POF) often found in the MEV context. These POFs usually involve private agreements between users (typically through wallet apps) and searchers with the intention of maximizing profits through exclusive access to MEV, which can threaten decentralization. The ticketing system, on the other hand, focuses on enhancing privacy for transaction that cannot be meaningfully front- or back runned. 
+
+**It is more of a private POF that can do the job of giving a jump start to unfunded EOS.**<br/>
+Of course, the concept can be expanded from there.
 
 #### Builder vs. Proposer
 The builder's block is only accepted and appended to the chain if the corresponding proposer selects it. 
@@ -114,7 +117,7 @@ In fact, no additional encryption is needed in the communication above since wit
 A third point where communication is necessary occurs when the user wishes to redeem tickets by providing a builder's signature. Since this information is no longer hidden through the blinding factor, some additional encryption, perhaps utilizing the builder's public key, might be required by the user before appending it to a transaction and submitting it to the builder (assuming it is submitted as calldata through the peer-to-peer network). 
 If the redemption is submitted along with the transaction through a private communication channel, additional encryption may not be necessary.
 
-In general, establishing an appropriate communication channel between users and builder feels like the great pain point in this context.
+In general, establishing an appropriate communication channel between users and builder still seems to demand further effort at this stage.
 
 #### Ticket Size and Change
 For privacy reasons, the ticketing service requires having tickets of fixed sizes. 
@@ -131,9 +134,9 @@ Hence, the ticket size should be chosen to be small enough not to generate subst
 </p>
 
 ## Furture Outlook
-In summary, there're still a lot of efforts required to solve the challenges outlined above.
+In summary, there're still a lot of efforts needed to solve the challenges outlined above.
 
-The ticketing can be seen as a private side-channel, and although side-channels have a very bad reputation in the context of MEV, they can users to increase privacy.
+The ticketing can be seen as a private private side-channel, and despite side-channels hiving a very bad reputation in the context of MEV (as they're a centralizing force), they can be used for the sake of increasing privacy, by making unlinkable transactions more convinient.
 
 If you're a builder or builder that wants to experiment with it, contact me. I'm happy to help with the integration.
 In particular, thinking of stealth addresses, the ticketing approach holds significant potential to improve UX - which is something I'd personally love to see.
