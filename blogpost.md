@@ -1,4 +1,4 @@
-# Fee Ticketing - A Backstage Pass to Ethereum Transactions
+# Fee Ticketing - A Backstage Pass to Ethereum Blocks
 
 **TL;DR - Users buy "tickets" from searchers/builders that, when redeemed, pay for inclusion. Such tickets can be used to interact with the chain using EOAs that aren't funded with ETH. This, while maintaining privacy, so that not even the searcher knows who has bought the redeemed ticket.**
 
