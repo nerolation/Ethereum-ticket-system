@@ -50,9 +50,10 @@ The user wants to avoid funding that account through account `A`, as this would 
 2. Transfer from a CEX and accept `B` getting doxxed in front of the CEX.
 3. Use the *Transaction Fee Ticketing* solution.
 
-Let's assume the user is from the US, so prohibited from engaging with Tornado Cash, while not being a hardcore rebellious libertarian at the same time, so option 1 is not applicable.
+Let's assume the user is from the US, so prohibited from engaging with Tornado Cash, while not being a hardcore rebellious libertarian at the same time. Then, using Tornado Cash would not be an option.<br/>
+Apart from the risk of violating sanctions (or increasing the anonymity set of malicious parties), zk-SNARK based mixers come with high gas costs (approx. 1m gas for depositing + withdrawing), as well as demanding some sophistication from the user as users are required to locally construct a merkle proof for the withdrawal. So, option 1 is not applicable for this use case.
 
-Option 2 assumes that a CEX can be trusted(!) to be both safe and reliable, knowing that the user owns the money in account "B". So the user discards this option as well.
+Option 2 assumes that a CEX can be entirely trusted — both in terms of security and reliability — with the knowledge that the user owns the funds in account "B". So the user discards this option as well.
 
 There remains option 3...
 
@@ -89,6 +90,8 @@ As stated above, the ticketing requires some trust to be placed on searchers/bui
 
 Even if users start purchasing tickets from many different builders/searchers, we're still talking about relatively modest amounts of money.
 In fact, having tickets redeemable at the 4 largest builders (as of June '23: beaver, 0x69, flashbots and rsync) would give a probability of being included in the next block of >70%.
+
+Nevertheless, it remains challenging to identify trustworhy builders. Malicious builder could sell tickets without providing signatures or including transactions, so we'd have to rely on some reputation system for builders.
 
 At this point, some might ask, "*Aren't you just suggesting to legitimize private order flows?*", and the answer is "*Yes, but with some some caveats*". It's important to note that this is not equivalent to the typical private order flows (POF) often found in the MEV context. These POFs usually involve private agreements between users (typically through wallet apps) and searchers with the intention of maximizing profits through exclusive access to MEV, which can threaten decentralization. The ticketing system, on the other hand, focuses on enhancing privacy for transaction that cannot be meaningfully front- or back runned. 
 
